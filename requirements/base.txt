@@ -22,3 +22,6 @@ coreapi==2.3.3  # https://github.com/core-api/python-client
 #Phone number field
 django-phonenumber-field==2.2.0 # https://github.com/stefanfoulis/django-phonenumber-field
 phonenumbers==8.10.6 # https://github.com/stefanfoulis/django-phonenumber-field
+
+# Documentation
+drf-yasg==1.14.0  # https://github.com/axnsan12/drf-yasg

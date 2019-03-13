@@ -68,6 +68,7 @@ THIRD_PARTY_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'rest_framework',
+    'drf_yasg',
 ]
 LOCAL_APPS = [
     'apps.users.apps.UsersAppConfig'
