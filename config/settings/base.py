@@ -67,8 +67,11 @@ THIRD_PARTY_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.google',
     'rest_framework',
     'drf_yasg',
+    'rest_auth',
 ]
 LOCAL_APPS = [
     'apps.users.apps.UsersAppConfig'
@@ -248,11 +251,43 @@ CELERYD_TASK_TIME_LIMIT = 5 * 60
 # http://docs.celeryproject.org/en/latest/userguide/configuration.html#task-soft-time-limit
 # TODO: set to whatever value is adequate in your circumstances
 CELERYD_TASK_SOFT_TIME_LIMIT = 60
+
 # django-allauth
 # ------------------------------------------------------------------------------
 ACCOUNT_ALLOW_REGISTRATION = env.bool('DJANGO_ACCOUNT_ALLOW_REGISTRATION', True)
 # https://django-allauth.readthedocs.io/en/latest/configuration.html
+ACCOUNT_EMAIL_VERIFICATION = env.bool('DJANGO_ACCOUNT_EMAIL_VERIFICATION', 'none')
+# https://django-allauth.readthedocs.io/en/latest/configuration.html
 SOCIALACCOUNT_ADAPTER = 'users.adapters.SocialAccountAdapter'
+SOCIALACCOUNT_PROVIDERS = {
+    'facebook': {
+        'METHOD': 'oauth2',
+        'SCOPE': ['email', 'public_profile', 'user_friends'],
+        'AUTH_PARAMS': {'auth_type': 'reauthenticate'},
+        'INIT_PARAMS': {'cookie': True},
+        'FIELDS': [
+            'id',
+            'email',
+            'name',
+            'birthday',
+            'gender',
+        ],
+        'EXCHANGE_TOKEN': True,
+        'VERIFIED_EMAIL': False,
+        'VERSION': 'v3.2',
+    },
+    'google': {
+        'SCOPE': [
+            'profile',
+            'email',
+        ],
+        'AUTH_PARAMS': {
+            'access_type': 'online',
+        }
+    }
+}
+# https://django-allauth.readthedocs.io/en/latest/providers.html
+
 # DJANGO REST FRAMEWORK
 # ------------------------------------------------------------------------------
 REST_FRAMEWORK = {
@@ -260,7 +295,19 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        # 'rest_framework.authentication.SessionAuthentication',
     ),
 }
 # https://www.django-rest-framework.org/api-guide/settings/
+
+# django-rest-auth
+# ------------------------------------------------------------------------------
+REST_AUTH_SERIALIZERS = {
+    # "JWT_SERIALIZER": "apps.users.api.serializers.JWTSerializer",
+    "USER_DETAILS_SERIALIZER": "apps.users.api.serializers.UserAuthSerializer",
+}
+# https://django-rest-auth.readthedocs.io/en/latest/configuration.html
+REST_USE_JWT = True
+# https://django-rest-auth.readthedocs.io/en/latest/installation.html#jwt-support-optional
+

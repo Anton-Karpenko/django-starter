@@ -25,3 +25,7 @@ phonenumbers==8.10.6 # https://github.com/stefanfoulis/django-phonenumber-field
 
 # Documentation
 drf-yasg==1.14.0  # https://github.com/axnsan12/drf-yasg
+
+# Auth
+django-rest-auth==0.9.3  # https://github.com/Tivix/django-rest-auth
+djangorestframework-jwt==1.11.0  #https://github.com/GetBlimp/django-rest-framework-jwt
