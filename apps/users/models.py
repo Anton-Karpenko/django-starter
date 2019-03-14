@@ -10,6 +10,21 @@ from .managers import UserManager
 
 
 class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
+    MALE = 'male'
+    FEMALE = 'female'
+    OTHER = 'other'
+    GENDER_CHOICES = (
+        (MALE, _("Male")),
+        (FEMALE, _("Female")),
+        (OTHER, _("Other")),
+    )
+
+    id = models.CharField(
+        max_length=11,
+        primary_key=True,
+        default=custom_uuid,
+        editable=False,
+    )
     username = models.CharField(
         max_length=24,
         unique=True,
@@ -21,6 +36,24 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
         error_messages={'unique': _("A user with this nickname already exists.")},
         default=custom_uuid,
     )
+    name = models.CharField(
+        _("Full name of User"),
+        max_length=60,
+        validators=[validators.MaxLengthValidator(60),
+                    validators.MinLengthValidator(1)],
+    )
+    email = models.EmailField(
+        unique=True,
+    )
+    gender = models.CharField(
+        max_length=10,
+        choices=GENDER_CHOICES,
+        blank=True,
+    )
+    birth_date = models.DateField(
+        null=True,
+    )
+
     is_staff = models.BooleanField(
         _('staff status'),
         default=False,
