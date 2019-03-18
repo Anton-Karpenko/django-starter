@@ -2,7 +2,7 @@ from datetime import datetime
 
 
 class SocialDataFiller:
-    values = 'image', 'birthday', 'name', 'gender'
+    values = 'image', 'birthday', 'gender'
 
     def __init__(self, sociallogin):
         self.sociallogin = sociallogin
@@ -12,9 +12,6 @@ class SocialDataFiller:
         raise NotImplementedError
 
     def set_birthday(self):
-        raise NotImplementedError
-
-    def set_name(self):
         raise NotImplementedError
 
     def set_gender(self):
@@ -34,9 +31,6 @@ class FacebookDataFiller(SocialDataFiller):
     def set_image(self):
         pass
 
-    def set_name(self):
-        self.sociallogin.user.name = self.data.get('name', '')
-
     def set_gender(self):
         self.sociallogin.user.gender = self.data.get('gender', '')
 
@@ -47,9 +41,6 @@ class GoogleDataFiller(SocialDataFiller):
 
     def set_image(self):
         pass
-
-    def set_name(self):
-        self.sociallogin.user.name = self.data.get('name', '')
 
     def set_gender(self):
         self.sociallogin.user.gender = self.data.get('gender', '')
