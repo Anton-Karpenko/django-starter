@@ -24,25 +24,9 @@ class SocialAccountAdapter(DefaultSocialAccountAdapter):
                       sociallogin,
                       data):
         """
-        ***
         This method was overridden due to a bug with an empty username.
-        ***
-
-        Hook that can be used to further populate the user instance.
-
-        For convenience, we populate several common fields.
-
-        Note that the user instance being populated represents a
-        suggested User instance that represents the social user that is
-        in the process of being logged in.
-
-        The User instance need not be completely valid and conflict
-        free. For example, verifying whether or not the username
-        already exists, is not a responsibility.
         """
         email = data.get('email')
-        name = data.get('name')
         user = sociallogin.user
         user_email(user, valid_email_or_none(email) or '')
-        user_field(user, 'name', name or '')
         return user

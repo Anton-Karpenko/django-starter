@@ -5,7 +5,7 @@ from apps.users.models import ProfileImage
 
 
 class SocialDataFiller:
-    values = 'image', 'birthday', 'gender'
+    values = 'image', 'birthday', 'gender', 'name'
 
     def __init__(self, sociallogin):
         self.sociallogin = sociallogin
@@ -18,6 +18,9 @@ class SocialDataFiller:
         raise NotImplementedError
 
     def set_gender(self):
+        raise NotImplementedError
+
+    def set_name(self):
         raise NotImplementedError
 
     def populate(self):
@@ -39,6 +42,9 @@ class FacebookDataFiller(SocialDataFiller):
     def set_gender(self):
         self.sociallogin.user.gender = self.data.get('gender', '')
 
+    def set_name(self):
+        self.sociallogin.user.name = self.data.get('name', '')
+
 
 class GoogleDataFiller(SocialDataFiller):
     def set_birthday(self):
@@ -51,6 +57,9 @@ class GoogleDataFiller(SocialDataFiller):
 
     def set_gender(self):
         self.sociallogin.user.gender = self.data.get('gender', '')
+
+    def set_name(self):
+        self.sociallogin.user.name = self.data.get('name', '')
 
 
 def create_data_filler(sociallogin):
