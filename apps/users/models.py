@@ -6,6 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from django_extensions.db.models import TimeStampedModel
 
 from apps.base.utils import custom_uuid
+from apps.images.models import Image
 from .managers import UserManager
 
 
@@ -80,3 +81,24 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
 
     def __str__(self):
         return self.username
+
+
+class ProfileImage(TimeStampedModel):
+    user = models.ForeignKey(
+        User,
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        related_name='profile_images_set'
+    )
+    image = models.OneToOneField(
+        'images.Image',
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE
+    )
+
+    @classmethod
+    def create(cls, user, image):
+        image = Image.objects.create(original_image=image)
+        ProfileImage.objects.create(user=user, image=image)
