@@ -82,6 +82,11 @@ class User(AbstractBaseUser, PermissionsMixin, TimeStampedModel):
     def __str__(self):
         return self.username
 
+    @property
+    def is_new(self):
+        # Only this data does not exist when a new user is filled with data from a social provider.
+        return not any((self.name, self.gender, self.birth_date, self.profile_images_set.exists()))
+
 
 class ProfileImage(TimeStampedModel):
     user = models.ForeignKey(

@@ -24,8 +24,9 @@ class SocialDataFiller:
         raise NotImplementedError
 
     def populate(self):
-        for value in self.values:
-            getattr(self, f'set_{value}')()
+        if self.sociallogin.user.is_new:
+            for value in self.values:
+                getattr(self, f'set_{value}')()
 
 
 class FacebookDataFiller(SocialDataFiller):
