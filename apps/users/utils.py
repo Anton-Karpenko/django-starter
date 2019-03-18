@@ -1,5 +1,8 @@
 from datetime import datetime
 
+from apps.base.utils import handle_upload_url_file
+from apps.users.models import ProfileImage
+
 
 class SocialDataFiller:
     values = 'image', 'birthday', 'gender'
@@ -29,7 +32,9 @@ class FacebookDataFiller(SocialDataFiller):
             self.sociallogin.user.birth_date = datetime.strptime(birthday, '%m/%d/%Y').date()
 
     def set_image(self):
-        pass
+        image = handle_upload_url_file("http://graph.facebook.com/" + self.sociallogin.account.uid +
+                                       "/picture?width=1000&height=1000")
+        ProfileImage.create(user=self.sociallogin.user, image=image)
 
     def set_gender(self):
         self.sociallogin.user.gender = self.data.get('gender', '')
@@ -40,7 +45,9 @@ class GoogleDataFiller(SocialDataFiller):
         pass
 
     def set_image(self):
-        pass
+        picture = self.data.get('picture')
+        image = handle_upload_url_file(picture)
+        ProfileImage.create(user=self.sociallogin.user, image=image)
 
     def set_gender(self):
         self.sociallogin.user.gender = self.data.get('gender', '')
